@@ -2,8 +2,7 @@ ggradar_alternative <- function(
     data, 
     data.max = data |> 
       select(-1) |> 
-      max(), # the maximum value which other values should be divided by to get 
-    # a percentage 
+      max(), # the maximum value which other values should be divided by to get a percentage 
     gridline.value = seq(20, 100, 20), 
     gridline.color = c(rep("gray", 4), "darkgray"), 
     gridline.linewidth = c(rep(1, 4), 2), 
@@ -85,7 +84,7 @@ ggradar_alternative <- function(
       rep(gridline.linetype[i], n_gridline_angle)
     )
   }
-  ## label
+  # label
   gridline_label <- tibble(
     x =  rep(gridline.label.offset, n_gridline_value), 
     y = gridline.value, 
@@ -93,9 +92,11 @@ ggradar_alternative <- function(
   )
   
   # axis
-  ## path
-  axis_angle <- gridline_angle[-(n_axis + 1)] # exclude the last 
-  # one since 2pi = 0
+    
+  # path
+  # exclude the last one since 2pi = 0
+  axis_angle <- gridline_angle[-(n_axis + 1)] 
+
   maximum <- max(gridline.value)
   colnames(data)[1] <- "State"
   state <- data |> 
@@ -105,7 +106,8 @@ ggradar_alternative <- function(
   axis_path <- c(0, maximum) |> 
     generate_path(axis_angle) |> 
     mutate(group = rep(1:n_axis, 2))
-  ## label
+    
+  # label
   axis_label <- tibble(
     label =  axis.label,
     x =  maximum * axis.label.offset * sin(axis_angle), 
@@ -148,7 +150,8 @@ ggradar_alternative <- function(
   
   # plotting
   radar_plot <- ggplot() + 
-    ## gridline
+    
+    # gridline
     geom_path(
       data = gridline_path, 
       aes(x, y, group = group), 
@@ -163,7 +166,8 @@ ggradar_alternative <- function(
       color = gridline.label.color, 
       family = gridline.label.family,
     ) +
-    ## axis
+    
+    # axis
     geom_path(
       data = axis_path, 
       aes(x, y, group = group), 
@@ -177,7 +181,8 @@ ggradar_alternative <- function(
       color = axis.label.color, 
       family = axis.label.family, 
     ) +
-    ## radar
+    
+    # radar
     geom_point(
       data = radar_path, 
       aes(x, y, color = group),  
